@@ -1,0 +1,7 @@
+_pycache_/
+data/
+test_image/
+data.zip/
+train_backup.py/
+# macOS
+.DS_Store
