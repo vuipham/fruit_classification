@@ -12,16 +12,15 @@ import vitaminData from "../storage/fruit_data";
 import styles from "../styles/add_Image_styles";
 
 const AddImage = () => {
-  const apiIp = "192.168.2.41";
-  const apiPort = "8888";
-  // set state cho du lieu anh duoc chon
+  const apiIp = "";
+  const apiPort = "";
+  // ===== set state for selected image
   const [image, setImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
 
-  // call to Python API ----------------------------------------------------------- START
+  // ===== send request to classifier api
 
   const [response, setResponse] = useState();
-  // const [isLoading, setIsLoading] = useState(true);
   const requestUrl = "http://" + apiIp + ":" + apiPort + "/api/classifier";
 
   useEffect(() => {
@@ -45,9 +44,7 @@ const AddImage = () => {
     detectFruits();
   });
 
-  // call to Python API ----------------------------------------------------------- END
-
-  // Chon anh tu thu vien
+  // select image from library
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -57,16 +54,15 @@ const AddImage = () => {
       base64: true,
     });
     if (!result.canceled) {
-      console.log("LIBRARY -- OK ----------->");
+      console.log("LIBRARY > OK ==>");
       await setImage(result.assets[0].uri);
       await setImageBase64(result.assets[0].base64);
-      // await setIsLoading(false);
     } else {
-      console.log("LIBRARY -- CANCEL ----------->");
+      console.log("LIBRARY > CANCEL ==>");
     }
   };
 
-  // Chup anh tu camera
+  // get from camera
   const takePicture = async () => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -76,18 +72,18 @@ const AddImage = () => {
       base64: true,
     });
     if (!result.canceled) {
-      console.log("CAMERA -- OK ----------->");
+      console.log("CAMERA > OK ==>");
       await setImage(result.assets[0].uri);
       await setImageBase64(result.assets[0].base64);
     } else {
-      console.log("CAMERA -- CANCEL ----------->");
+      console.log("CAMERA > CANCEL ==>");
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.choose_image}>
-        {/* Anh hien thi */}
+        {/* image selected display */}
         {image && <Image source={{ uri: image }} style={styles.image} />}
         {!image && (
           <Image
@@ -99,7 +95,7 @@ const AddImage = () => {
         )}
 
         <View style={styles.row}>
-          {/* Nut Library */}
+          {/* Library button*/}
           <TouchableOpacity
             onPress={() => pickImage()}
             style={styles.button_library}
@@ -107,7 +103,7 @@ const AddImage = () => {
             <Text style={styles.text_library}>Library </Text>
           </TouchableOpacity>
 
-          {/* Nut Camera */}
+          {/* Camera button */}
           <TouchableOpacity
             onPress={() => takePicture()}
             style={styles.button_camera}
@@ -120,10 +116,10 @@ const AddImage = () => {
       {/* loading...
             {isLoading === true && <ActivityIndicator size="large" color="#C060A1" />} */}
 
-      {/* Ket qua nhan dang */}
+      {/* result panel */}
       {response && (
         <View style={styles.data_view_fruit_name}>
-          {/* Ten trai cay */}
+          {/* fruit name */}
           <Text style={styles.text_fruit_name}>
             {vitaminData[response].name}{" "}
           </Text>
@@ -131,7 +127,7 @@ const AddImage = () => {
       )}
       {response ? (
         <ScrollView style={styles.data_view}>
-          {/* Thong tin Vitamin */}
+          {/* fruit info */}
           <Text style={styles.text_vitamin}>• Vitamin content in 100g </Text>
           <Text style={styles.text_vitamin}>
             (μg = microgam • mg = miligam){" "}
@@ -168,20 +164,20 @@ const AddImage = () => {
           )}
           <Text></Text>
 
-          {/* Mo ta trai cay */}
+          {/* fruit description */}
           <Text style={styles.text_describe}>
             • Describe: {vitaminData[response].meta}{" "}
           </Text>
           <Text></Text>
 
-          {/* Xac thuc nguon thong tin tu USDA */}
+          {/* USDA */}
           <Text style={{ color: "#00005C" }}>Reference data from USDA</Text>
           <Text></Text>
           <Text></Text>
         </ScrollView>
       ) : (
         <View style={styles.welcome_view}>
-          {/* Hien thi khi start app */}
+          {/* tips display */}
           <Text style={styles.text_welcome}>
             {"Tips: Choose an fruit image from Library or Camera for detect"}
           </Text>
