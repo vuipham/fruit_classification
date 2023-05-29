@@ -13,12 +13,12 @@ from flask_cors import CORS, cross_origin
 
 n_class = 10
 
-def pil_image_to_base64(pil_image): #input str - output img
+def pil_image_to_base64(pil_image): #input img - output base64
     buf = BytesIO()
     pil_image.save(buf, format="JPEG")
     return base64.b64encode(buf.getvalue())
 
-def base64_to_pil_image(base64_img): #input img - output bytes
+def base64_to_pil_image(base64_img): #input base64 - output img
     return Image.open(BytesIO(base64.b64decode(base64_img)))
 
 def get_model():
@@ -65,9 +65,20 @@ def detect():
     image = tf.expand_dims(image, axis=0)
     # classifi
     predicted_class = model.predict(image)
-    output = str(np.argmax(predicted_class))
+    print('-----------------------------------------------')
+    print(round(100 * (np.max(predicted_class[0])), 2))
+    print(np.argmax(predicted_class))
+    # print(model)
+    print('-----------------------------------------------')
+    confidence = round(100 * (np.max(predicted_class[0])), 2)
+    if confidence < 50:
+        print("Chọn lại ảnh")
+        output = 10
+    else:
+        output = str(np.argmax(predicted_class))
+        
     return jsonify({
-            "api_name":"AnhFang fruit detect API",
+            "api_name":"Fruit detect API",
             "fruit_detect": output,
             })
 
@@ -75,7 +86,7 @@ def detect():
 @cross_origin(origins='*')
 def testFuntion():
     return jsonify([{
-            "api_name":"AnhFang fruit detect API",
+            "api_name":"Fruit detect API",
             "fruit_detect": "test ok",
             }])
 

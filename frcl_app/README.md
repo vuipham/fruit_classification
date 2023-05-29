@@ -21,4 +21,4 @@ Fruit classification app - React Native
 \*\* Build Aab file for Play Store
 <code>eas build -p android</code>
 
-contact: phoanganh148@gmail.com<br>
+

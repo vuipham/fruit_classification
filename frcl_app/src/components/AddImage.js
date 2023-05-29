@@ -12,8 +12,8 @@ import vitaminData from "../storage/fruit_data";
 import styles from "../styles/add_Image_styles";
 
 const AddImage = () => {
-  const apiIp = "";
-  const apiPort = "";
+  const apiIp = "192.168.43.177";
+  const apiPort = "8888";
   // ===== set state for selected image
   const [image, setImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
@@ -128,10 +128,10 @@ const AddImage = () => {
       {response ? (
         <ScrollView style={styles.data_view}>
           {/* fruit info */}
-          <Text style={styles.text_vitamin}>• Vitamin content in 100g </Text>
+          {/* <Text style={styles.text_vitamin}>• Vitamin content in 100g </Text>
           <Text style={styles.text_vitamin}>
             (μg = microgam • mg = miligam){" "}
-          </Text>
+          </Text> */}
           {vitaminData[response].a > 0 && (
             <Text style={styles.text_vitamin}>
               {"   "}- Vitamin A (μg): {vitaminData[response].a}
@@ -166,12 +166,16 @@ const AddImage = () => {
 
           {/* fruit description */}
           <Text style={styles.text_describe}>
-            • Describe: {vitaminData[response].meta}{" "}
+            {vitaminData[response].meta}{" "}
+          </Text>
+
+          <Text style={styles.error}>
+            {vitaminData[response].error}{" "}
           </Text>
           <Text></Text>
 
           {/* USDA */}
-          <Text style={{ color: "#00005C" }}>Reference data from USDA</Text>
+          {/* <Text style={{ color: "#00005C" }}>Reference data from USDA</Text> */}
           <Text></Text>
           <Text></Text>
         </ScrollView>
